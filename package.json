@@ -1,0 +1,7 @@
+{
+  "name": "stanford-web-sec",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Marcin Moch <marcio.moch@gmail.com>",
+  "license": "MIT"
+}

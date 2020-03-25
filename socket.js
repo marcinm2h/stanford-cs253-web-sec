@@ -1,7 +1,8 @@
 const net = require('net');
 const dns = require('dns');
 
-const host = 'example.com';
+const host = process.argv[2] || 'example.com';
+const port = process.argv[3] || 80;
 
 dns.lookup(host, (err, ipAddress) => {
   if (err) throw err
@@ -10,7 +11,7 @@ dns.lookup(host, (err, ipAddress) => {
 	
   const socket = net.createConnection({
     host: ipAddress,
-    port: 80
+    port
   });
 
   const request = `

@@ -2,7 +2,15 @@ const path = require("path");
 const { readdirSync } = require("fs");
 const { exec } = require("child_process");
 
-const [_, __, exercise, ...args] = process.argv;
+const exercisesDir = "src";
+const startScript = "start.sh";
+const [_, __, arg3] = process.argv;
+const exercise = arg3.includes("/")
+  ? arg3
+      .split("/")
+      .filter(Boolean)
+      .filter(str => str !== exercisesDir)[0]
+  : arg3;
 
 if (!exercise) {
   throw new Error(
@@ -10,21 +18,22 @@ if (!exercise) {
   );
 }
 
+const resolveApp = (...paths) =>
+  path.resolve(path.join(__dirname, "..", ...paths));
+
 const getDirectories = source =>
   readdirSync(source, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
 
-const exercises = getDirectories(path.resolve(".")).filter(
-  dir => ![".git", "node_modules", "scripts"].includes(dir)
-);
+const exercises = getDirectories(resolveApp(exercisesDir));
 
 if (!exercises.includes(exercise)) {
   throw new Error("Invalid exercise name");
 }
 
 const startScriptPath = require.resolve(
-  path.join(__dirname, "..", exercise, "start.sh")
+  resolveApp(exercisesDir, exercise, startScript)
 );
 
 console.log(`Exercise ${exercise}`);

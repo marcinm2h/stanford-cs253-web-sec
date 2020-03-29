@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site B</title>
+</head>
+<body>
+  <h1>Site b</h1>
+  <pre>window.opener.location === site-a window. Can change location</pre>
+  <script>
+    window.opener.location = "/site-a-malicious.html"
+  </script>
+</body>
+</html>

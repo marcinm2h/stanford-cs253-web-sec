@@ -2,18 +2,20 @@ const path = require("path");
 const { readdirSync } = require("fs");
 const { exec } = require("child_process");
 
-const exercisesDir = "src";
-const startScript = "start.sh";
 const [_, __, arg] = process.argv;
-const exercise = arg.includes("/")
-  ? arg.split("/").filter(str => str && str !== exercisesDir)[0]
-  : arg;
-
-if (!exercise) {
+if (!arg) {
   throw new Error(
     "Pass exercise directory name as an argument (e.g. node start.js 04-cors"
   );
 }
+
+const exercisesDir = "src";
+const startScript = "start.sh";
+const exercise = arg.includes("/")
+  ? arg.split("/").filter(str => str && str !== exercisesDir)[0]
+  : arg;
+const DIR = `"$( cd "$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"`;
+const ENV = `DIR=${DIR}`;
 
 const resolveApp = (...paths) =>
   path.resolve(path.join(__dirname, "..", ...paths));
@@ -34,7 +36,7 @@ const startScriptPath = require.resolve(
 );
 
 console.log(`Exercise ${exercise}`);
-const childProcess = exec(`sh ${startScriptPath}`);
+const childProcess = exec(`${ENV} sh ${startScriptPath}`);
 childProcess.stdout.pipe(process.stdout);
 
 process.on("SIGINT", () => {

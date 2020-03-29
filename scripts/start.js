@@ -14,8 +14,6 @@ const startScript = "start.sh";
 const exercise = arg.includes("/")
   ? arg.split("/").filter(str => str && str !== exercisesDir)[0]
   : arg;
-const DIR = `"$( cd "$( dirname "\${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"`;
-const ENV = `DIR=${DIR}`;
 
 const resolveApp = (...paths) =>
   path.resolve(path.join(__dirname, "..", ...paths));
@@ -36,8 +34,13 @@ const startScriptPath = require.resolve(
 );
 
 console.log(`Exercise ${exercise}`);
+
+const DIR = resolveApp(exercisesDir, exercise);
+const ENV = `DIR="${DIR}"`;
 const childProcess = exec(`${ENV} sh ${startScriptPath}`);
+
 childProcess.stdout.pipe(process.stdout);
+childProcess.stderr.pipe(process.stderr);
 
 process.on("SIGINT", () => {
   childProcess.kill("SIGINT");

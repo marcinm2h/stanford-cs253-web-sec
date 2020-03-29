@@ -19,8 +19,8 @@ if (!arg) {
 
 const exercisesDir = "src";
 const startScript = "start.sh";
-const exercise = arg.includes("/")
-  ? arg.split("/").filter(str => str && str !== exercisesDir)[0]
+const exercise = arg.includes(path.sep)
+  ? arg.split(path.sep).filter(str => str && str !== exercisesDir)[0]
   : arg;
 
 const exercises = getDirectories(resolveApp(exercisesDir));

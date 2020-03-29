@@ -2,6 +2,14 @@ const path = require("path");
 const { readdirSync } = require("fs");
 const { exec } = require("child_process");
 
+const resolveApp = (...paths) =>
+  path.resolve(path.join(__dirname, "..", ...paths));
+
+const getDirectories = source =>
+  readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
 const [_, __, arg] = process.argv;
 if (!arg) {
   throw new Error(
@@ -14,14 +22,6 @@ const startScript = "start.sh";
 const exercise = arg.includes("/")
   ? arg.split("/").filter(str => str && str !== exercisesDir)[0]
   : arg;
-
-const resolveApp = (...paths) =>
-  path.resolve(path.join(__dirname, "..", ...paths));
-
-const getDirectories = source =>
-  readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
 
 const exercises = getDirectories(resolveApp(exercisesDir));
 

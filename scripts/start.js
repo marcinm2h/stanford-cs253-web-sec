@@ -4,13 +4,10 @@ const { exec } = require("child_process");
 
 const exercisesDir = "src";
 const startScript = "start.sh";
-const [_, __, arg3] = process.argv;
-const exercise = arg3.includes("/")
-  ? arg3
-      .split("/")
-      .filter(Boolean)
-      .filter(str => str !== exercisesDir)[0]
-  : arg3;
+const [_, __, arg] = process.argv;
+const exercise = arg.includes("/")
+  ? arg.split("/").filter(str => str && str !== exercisesDir)[0]
+  : arg;
 
 if (!exercise) {
   throw new Error(

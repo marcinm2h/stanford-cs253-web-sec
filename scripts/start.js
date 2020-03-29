@@ -5,7 +5,7 @@ const { exec } = require("child_process");
 const [_, __, arg] = process.argv;
 if (!arg) {
   throw new Error(
-    "Pass exercise directory name as an argument (e.g. node start.js 04-cors"
+    "Pass exercise directory name as an argument (e.g. node start.js 04-cors)"
   );
 }
 

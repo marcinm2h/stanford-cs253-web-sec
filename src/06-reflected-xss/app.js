@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require("express");
+const htmlEscape = require("html-escape");
 
 const app = express();
 const PORT = 3000;
@@ -41,6 +42,17 @@ app.get("/search", (req, res) => {
     renderPage(
       `
   <h1>Search results for ${req.query.search}</h1>  
+`,
+      { title: "Search results" }
+    )
+  );
+});
+
+app.get("/safe-search", (req, res) => {
+  res.send(
+    renderPage(
+      `
+  <h1>Search results for ${htmlEscape(req.query.search)}</h1>  
 `,
       { title: "Search results" }
     )

@@ -36,7 +36,10 @@ const startScriptPath = require.resolve(
 console.log(`Exercise ${exercise}`);
 
 const DIR = resolveApp(exercisesDir, exercise);
-const ENV = `DIR="${DIR}"`;
+const PORT = process.env.PORT;
+const ENV = [`DIR="${DIR}"`, PORT && `PORT="${PORT}"`]
+  .filter(Boolean)
+  .join(" ");
 const childProcess = exec(`${ENV} sh ${startScriptPath}`);
 
 childProcess.stdout.pipe(process.stdout);
